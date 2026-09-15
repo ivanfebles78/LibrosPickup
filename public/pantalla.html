@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pantalla de turnos · Recogida de libros</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/pantalla.css">
+</head>
+<body>
+  <header class="head">
+    <div class="brand"><span class="mark">L</span><span data-school>Colegio</span> · Recogida de libros</div>
+    <div class="clock" id="clock">--:--</div>
+  </header>
+
+  <main class="stage">
+    <section class="last" id="last" aria-live="assertive" aria-atomic="true">
+      <p class="label">Turno llamado</p>
+      <div class="last-code" id="last-code">—</div>
+      <div class="last-station" id="last-station">Espere a que aparezca su código</div>
+    </section>
+
+    <section class="stations" id="stations" aria-label="Puestos de atención"></section>
+
+    <section class="next">
+      <p class="label">Próximos turnos</p>
+      <ol class="next-list" id="next-list"></ol>
+    </section>
+  </main>
+
+  <button class="sound" id="btn-sound" type="button">🔔 Activar sonido y voz</button>
+
+  <script type="module" src="/js/pantalla.js"></script>
+</body>
+</html>

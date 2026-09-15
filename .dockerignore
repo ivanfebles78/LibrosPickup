@@ -1,0 +1,8 @@
+node_modules
+data
+test
+.env
+.env.example
+.claude
+.git
+README.md

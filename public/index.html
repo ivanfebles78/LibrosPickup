@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recogida de libros · Pedido completado</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/padres.css">
+</head>
+<body>
+  <header class="wrap topbar">
+    <div class="brand"><span class="brand-mark">L</span><span data-school>Colegio</span></div>
+    <div class="topbar-meta">Libros de texto · Curso 2026-27</div>
+  </header>
+
+  <main class="wrap">
+    <!-- Confirmación de compra -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-text">
+        <p class="eyebrow">Pedido <span class="mono">LB-2026-0418</span> · pagado</p>
+        <h1 id="hero-title">¡Listo! Los libros ya están reservados.</h1>
+        <p class="hero-lead">
+          Solo falta elegir cuándo pasas a recogerlos por el colegio. Te llevará
+          diez minutos: eliges una hora, recibes un código y en el pasillo la pantalla
+          te avisa cuando te toca.
+        </p>
+        <div class="row">
+          <button class="btn btn-blue btn-lg" id="btn-agendar">
+            Agendar recogida
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <span class="muted hero-hint">Lunes a viernes · 8:30–12:30 y 15:00–17:00</span>
+        </div>
+      </div>
+
+      <aside class="order card" aria-label="Resumen del pedido">
+        <div class="order-head">
+          <span class="eyebrow">Resumen</span>
+          <span class="order-badge">4 libros</span>
+        </div>
+        <ul class="order-list">
+          <li><span>Matemáticas 3.º Primaria</span><span>24,90 €</span></li>
+          <li><span>Lengua Castellana 3.º</span><span>23,50 €</span></li>
+          <li><span>Natural Science 3</span><span>27,10 €</span></li>
+          <li><span>Cuaderno de música</span><span>9,80 €</span></li>
+        </ul>
+        <div class="order-total"><span>Total pagado</span><span>85,30 €</span></div>
+        <p class="order-note">Alumno: Martín G. · 3.º B</p>
+      </aside>
+    </section>
+
+    <!-- Agenda -->
+    <section class="agenda hidden" id="agenda" aria-labelledby="agenda-title">
+      <div class="agenda-head">
+        <p class="eyebrow">Paso 1 de 2</p>
+        <h2 id="agenda-title">Elige tu hora de recogida</h2>
+      </div>
+
+      <div class="agenda-grid">
+        <form class="card datos" id="form-datos" novalidate>
+          <h3>Tus datos</h3>
+          <p class="muted">Te enviaremos el código de turno.</p>
+          <div class="field">
+            <label for="nombre">Nombre y apellidos</label>
+            <input id="nombre" name="name" autocomplete="name" required placeholder="Ana García">
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="ana@correo.es">
+          </div>
+          <div class="field">
+            <label for="movil">Móvil (SMS)</label>
+            <input id="movil" name="phone" type="tel" autocomplete="tel" placeholder="612 345 678">
+            <small>Rellena al menos uno de los dos.</small>
+          </div>
+        </form>
+
+        <div class="card calendario">
+          <div class="cal-nav">
+            <button class="btn btn-ghost btn-sm" id="week-prev" aria-label="Semana anterior">‹</button>
+            <strong id="week-label">Semana</strong>
+            <button class="btn btn-ghost btn-sm" id="week-next" aria-label="Semana siguiente">›</button>
+          </div>
+
+          <div class="day-tabs" id="day-tabs" role="tablist" aria-label="Día"></div>
+
+          <div class="legend">
+            <span><i class="sw sw-free"></i> Disponible</span>
+            <span><i class="sw sw-taken"></i> Ocupado</span>
+            <span><i class="sw sw-sel"></i> Tu elección</span>
+          </div>
+
+          <div id="slot-groups" class="slot-groups"></div>
+        </div>
+      </div>
+
+      <div class="confirm-bar card" id="confirm-bar">
+        <div>
+          <p class="eyebrow">Cita elegida</p>
+          <p class="confirm-when" id="confirm-when">Selecciona una franja azul</p>
+        </div>
+        <div class="row">
+          <div class="alert alert-error hidden" id="form-error" role="alert"></div>
+          <button class="btn btn-primary btn-lg" id="btn-confirmar" disabled>Confirmar cita</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Código -->
+    <section class="done hidden" id="done" aria-labelledby="done-title">
+      <div class="card done-card">
+        <p class="eyebrow">Paso 2 de 2 · cita confirmada</p>
+        <h2 id="done-title">Este es tu código de turno</h2>
+        <div class="big-code" id="done-code" aria-live="polite">----</div>
+        <p class="done-when" id="done-when"></p>
+        <p class="done-sent" id="done-sent"></p>
+        <ol class="done-steps">
+          <li>Ven al colegio a tu hora y espera en el pasillo.</li>
+          <li>Mira la pantalla: cuando aparezca tu código, acércate al <strong>puesto</strong> indicado.</li>
+          <li>Enseña el código y recoge los libros.</li>
+        </ol>
+        <button class="btn btn-ghost" id="btn-otra">Agendar otra recogida</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <span>Acceso interno: <a href="/empleado">puesto de atención</a> · <a href="/pasillo">pantalla del pasillo</a></span>
+  </footer>
+
+  <script type="module" src="/js/padres.js"></script>
+</body>
+</html>
