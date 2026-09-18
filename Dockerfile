@@ -12,11 +12,11 @@ COPY src ./src
 COPY public ./public
 COPY scripts ./scripts
 
-# Datos persistentes: monta un volumen de Railway en /data
+# Datos persistentes: monta un volumen de Railway en /data.
+# Railway monta los volúmenes como root, así que el proceso corre como root
+# para poder escribir en ellos (el contenedor está aislado igualmente).
 ENV DATA_FILE=/data/db.json
-RUN mkdir -p /data && chown -R node:node /data /app
-
-USER node
+RUN mkdir -p /data
 
 EXPOSE 3000
 

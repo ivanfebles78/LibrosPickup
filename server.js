@@ -6,7 +6,7 @@ import { createBroadcaster } from './src/events.js';
 import { createNotifier } from './src/notify.js';
 import { QueueError } from './src/queue.js';
 import { createRouter } from './src/routes.js';
-import { createStore } from './src/store.js';
+import { assertWritable, createStore } from './src/store.js';
 
 export function createApp(config = CONFIG, deps = {}) {
   const store = deps.store || createStore(config.dataFile);
@@ -43,11 +43,13 @@ export function createApp(config = CONFIG, deps = {}) {
 
 const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 if (isMain) {
+  assertWritable(CONFIG.dataFile);
   createApp().listen(CONFIG.port, () => {
     console.log(`Recogida de libros · ${CONFIG.schoolName}`);
     console.log(`  Padres:    http://localhost:${CONFIG.port}/`);
     console.log(`  Empleados: http://localhost:${CONFIG.port}/empleado`);
     console.log(`  Pasillo:   http://localhost:${CONFIG.port}/pasillo`);
     console.log(`  Puestos:   ${CONFIG.stations}`);
+    console.log(`  Datos:     ${CONFIG.dataFile}`);
   });
 }
