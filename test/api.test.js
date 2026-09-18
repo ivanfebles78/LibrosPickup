@@ -160,3 +160,26 @@ test('las reservas se limitan por IP', async () => {
     close();
   }
 });
+
+test('los endpoints de demo exigen STAFF_PIN configurado y correcto', async () => {
+  const open = await startServer();
+  try {
+    const res = await open.call('/demo/seed', { method: 'POST', body: { count: 2 } });
+    assert.equal(res.status, 403);
+  } finally {
+    open.close();
+  }
+  const { call, close } = await startServer({ staffPin: '9999' });
+  try {
+    assert.equal((await call('/demo/seed', { method: 'POST', body: {} })).status, 401);
+    const headers = { 'X-Staff-Pin': '9999' };
+    const seeded = await call('/demo/seed', { method: 'POST', body: { count: 3 }, headers });
+    assert.equal(seeded.status, 201);
+    assert.ok(seeded.body.created.length <= 3);
+    assert.ok(seeded.body.created.every((a) => a.email === undefined));
+    const cleared = await call('/demo', { method: 'DELETE', headers });
+    assert.equal(cleared.body.removed, seeded.body.created.length);
+  } finally {
+    close();
+  }
+});

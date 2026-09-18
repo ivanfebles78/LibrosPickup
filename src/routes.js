@@ -9,6 +9,7 @@ import {
 } from './slots.js';
 import { parseStation, validateBooking } from './validate.js';
 import { rateLimit, requireStaffPin } from './guards.js';
+import { clampCount, clearDemo, seedDemo } from './demo.js';
 
 /** Datos públicos de una cita (sin email/teléfono). */
 function publicView(a) {
@@ -123,6 +124,27 @@ export function createRouter({ config, store, notifier, broadcaster }) {
     store.update((state) => markNoShow(state, station));
     publishQueue();
     res.json({ ok: true });
+  });
+
+  // --- Datos de demostración (solo con STAFF_PIN configurado) ---
+  const demoOnly = (req, res, next) => {
+    if (!config.staffPin) return next(new QueueError('Configura STAFF_PIN para usar los datos de demo', 403));
+    return staffOnly(req, res, next);
+  };
+
+  router.post('/demo/seed', demoOnly, (req, res) => {
+    const count = clampCount(req.body?.count);
+    const { created } = store.update((state) => seedDemo(state, config, { count, date: today() }));
+    publishQueue();
+    broadcaster.broadcast('slots', { date: today() });
+    res.status(201).json({ created: created.map(publicView) });
+  });
+
+  router.delete('/demo', demoOnly, (_req, res) => {
+    const { removed } = store.update((state) => clearDemo(state));
+    publishQueue();
+    broadcaster.broadcast('slots', { date: today() });
+    res.json({ removed });
   });
 
   router.get('/events', (req, res) => {

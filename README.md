@@ -80,11 +80,25 @@ test/                node:test (unitarios + API)
 | POST | `/api/stations/:n/recall` | Volver a llamar al actual |
 | POST | `/api/stations/:n/done` | Marcar atendido |
 | POST | `/api/stations/:n/no-show` | Marcar no presentado |
+| POST | `/api/demo/seed` | (PIN) Crea `{ count }` citas ficticias antes de la primera cita real de hoy |
+| DELETE | `/api/demo` | (PIN) Elimina las citas ficticias |
 | GET | `/api/events` | Stream SSE (`queue`, `call`, `slots`) |
 
 Las respuestas de cola nunca incluyen email ni teléfono de las familias, y los logs
 del modo simulado los muestran enmascarados. `POST /api/appointments` está limitado a
 20 reservas por IP y hora (`bookingRateLimit` en `src/config.js`).
+
+## Datos de demostración en una instancia desplegada
+
+Para enseñar la cola con gente por delante: reserva primero tu cita desde `/`, y después:
+
+```bash
+npm run demo -- https://<dominio> <STAFF_PIN> 4      # 4 familias ficticias justo antes de tu cita
+npm run demo:clear -- https://<dominio> <STAFF_PIN>  # borra todas las citas de demo
+```
+
+Requiere `STAFF_PIN` configurado. Las citas de demo llevan la marca `demo: true`; `demo:clear`
+solo borra esas, nunca reservas reales.
 
 ## Despliegue en Railway
 
